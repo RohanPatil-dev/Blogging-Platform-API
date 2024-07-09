@@ -42,6 +42,8 @@ async function login(req,res){
 
         const findEmail = await user.findOne({ email: email, password: password })
 
+        console.log(findEmail.role);
+
         if (!email && !password) {
             return res.status(400).json({ msg: "Form is empty !" })
         } else if (!email) {
@@ -61,7 +63,7 @@ async function login(req,res){
             const token = setUser(findEmail)
             console.log("token", token);
 
-            return res.status(201).json({ msg: `Your email is : ${email} and Password is ${password}`, token })
+            return res.status(201).json({ msg: `Your email is : ${email} and Password is ${password}`,role : findEmail.role, token })
         }
     } catch (error) {
         return res.status(400).json({ msg: "error found", error })

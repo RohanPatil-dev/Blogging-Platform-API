@@ -29,6 +29,20 @@ async function addBlogs(req,res){
     }
 }
 
+// this will show when our blog is submitted and want to see all the blogs which is created by the perticular blogger
+async function renderBlog(req,res){
+    try {
+        jwt.verify(req.token,secret,async (err,data)=>{
+            if(err) throw err
+ 
+            const allData = await blogs.find({blogger : data._id})
+ 
+            return res.status(201).json({ msg: "Success", allData: allData })
+         })
+    } catch (error) {
+        return res.status(400).json({ msg: "Data is empty !" })
+    }
+}
 
 async function getAllData(req,res){
     try {
@@ -90,4 +104,4 @@ async function deleteData(req,res) {
     }
 }
 
-module.exports = {addBlogs,getAllData,singleData,updateData,deleteData}
+module.exports = {addBlogs,getAllData,singleData,updateData,deleteData,renderBlog}

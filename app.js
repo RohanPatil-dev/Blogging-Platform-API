@@ -2,11 +2,16 @@ const express = require('express')
 const app = express()
 const path = require("path")
 
+const cors = require("cors")
+const bodyParser = require("body-parser")
+
 const port = 8081
 
 // connection
 const { connection } = require("./connection")
 
+app.use(cors())
+app.use(bodyParser.json())
 
 // middleware
 app.use(express.urlencoded({ extended: false }))
