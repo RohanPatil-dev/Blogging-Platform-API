@@ -4,7 +4,7 @@ const secret = "Rohan123504"
 const blogs = require("../model/blogs")
 
 
-async function addBlogs(req,res){
+async function addBlogs(req, res) {
     try {
         const { title, description } = req.body
 
@@ -25,7 +25,7 @@ async function addBlogs(req,res){
 
                 if (err) throw err
 
-                const blog = await blogs.create({ blogger: data._id, title: title, description: description,coverImage : coverImage.filename })
+                const blog = await blogs.create({ blogger: data._id, title: title, description: description, coverImage: coverImage.filename })
 
                 return res.status(201).json({ msg: "success", blog })
             })
@@ -36,28 +36,28 @@ async function addBlogs(req,res){
 }
 
 // this will show when our blog is submitted and want to see all the blogs which is created by the perticular blogger
-async function renderBlog(req,res){
+async function renderBlog(req, res) {
     try {
-        jwt.verify(req.token,secret,async (err,data)=>{
-            if(err) throw err
- 
-            const allData = await blogs.find({blogger : data._id})
- 
+        jwt.verify(req.token, secret, async (err, data) => {
+            if (err) throw err
+
+            const allData = await blogs.find({ blogger: data._id })
+
             return res.status(201).json({ msg: "Success", allData: allData })
-         })
+        })
     } catch (error) {
         return res.status(400).json({ msg: "Data is empty !" })
     }
 }
 
-async function getAllData(req,res){
+async function getAllData(req, res) {
     try {
-        jwt.verify(req.token,secret,async (err,data)=>{
-           if(err) throw err
+        jwt.verify(req.token, secret, async (err, data) => {
+            if (err) throw err
 
-           const allData = await blogs.find({})
+            const allData = await blogs.find({})
 
-           return res.status(201).json({ msg: "Success", allData: allData })
+            return res.status(201).json({ msg: "Success", allData: allData })
         })
 
     } catch (error) {
@@ -65,30 +65,15 @@ async function getAllData(req,res){
     }
 }
 
-async function singleData(req,res) {
+async function singleData(req, res) {
     try {
-        jwt.verify(req.token,secret,async (err,data)=>{
-            if(err) throw err
+        jwt.verify(req.token, secret, async (err, data) => {
+            if (err) throw err
 
-        const id = req.params.id
-        const allData = await blogs.findById(id)
+            const id = req.params.id
+            const allData = await blogs.findById(id)
 
-        return res.status(201).json({ msg: "Success", allData: allData })
-    })
-    } catch (error) {
-        return res.status(400).json({ msg: "Data is empty !" })
-    }
-}
-
-
-function updateData(req,res) {
-    try {
-        jwt.verify(req.token,secret,async (err,data)=>{
-        if (err) throw err;
-        const id = req.params.id
-        const allData = await blogs.findByIdAndUpdate(id, req.body)
-
-        return res.status(201).json({ msg: "Success", allData: allData })
+            return res.status(201).json({ msg: "Success", allData: allData })
         })
     } catch (error) {
         return res.status(400).json({ msg: "Data is empty !" })
@@ -96,18 +81,33 @@ function updateData(req,res) {
 }
 
 
-async function deleteData(req,res) {
+function updateData(req, res) {
     try {
-        jwt.verify(req.token,secret,async (err,data)=>{
-        if (err) throw err;
-        const id = req.params.id
-        const allData = await blogs.findByIdAndDelete(id)
+        jwt.verify(req.token, secret, async (err, data) => {
+            if (err) throw err;
+            const id = req.params.id
+            const allData = await blogs.findByIdAndUpdate(id, req.body)
 
-        return res.status(201).json({ msg: "Success", allData: allData })
+            return res.status(201).json({ msg: "Success", allData: allData })
         })
     } catch (error) {
         return res.status(400).json({ msg: "Data is empty !" })
     }
 }
 
-module.exports = {addBlogs,getAllData,singleData,updateData,deleteData,renderBlog}
+
+async function deleteData(req, res) {
+    try {
+        jwt.verify(req.token, secret, async (err, data) => {
+            if (err) throw err;
+            const id = req.params.id
+            const allData = await blogs.findByIdAndDelete(id)
+
+            return res.status(201).json({ msg: "Success", allData: allData })
+        })
+    } catch (error) {
+        return res.status(400).json({ msg: "Data is empty !" })
+    }
+}
+
+module.exports = { addBlogs, getAllData, singleData, updateData, deleteData, renderBlog }
