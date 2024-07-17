@@ -20,6 +20,10 @@ const blogSchema = mongoose.Schema({
         type : String,
         required : true
     },
+    coverImage : {
+        type : String,
+        required : false,
+    },
      review: [commentSchema]
 });
 

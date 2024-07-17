@@ -18,6 +18,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+//  static file middleware
+app.use(express.static(path.resolve("./public")))
+
 //routes
 const userRoute = require("./routes/user")
 const blogRoute = require("./routes/blogs")

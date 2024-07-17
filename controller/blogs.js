@@ -3,9 +3,15 @@ const secret = "Rohan123504"
 
 const blogs = require("../model/blogs")
 
+
 async function addBlogs(req,res){
     try {
         const { title, description } = req.body
+
+        console.log(req.file);
+        console.log(req.body);
+
+        const coverImage = req.file
 
         if (!title && !description) {
             return res.status(400).json({ msg: "Form is empty" })
@@ -19,7 +25,7 @@ async function addBlogs(req,res){
 
                 if (err) throw err
 
-                const blog = await blogs.create({ blogger: data._id, title: title, description: description })
+                const blog = await blogs.create({ blogger: data._id, title: title, description: description,coverImage : coverImage.filename })
 
                 return res.status(201).json({ msg: "success", blog })
             })

@@ -11,7 +11,22 @@ const blogs = require("../model/blogs")
 
 const {addBlogs,getAllData, singleData, updateData, deleteData, renderBlog} = require("../controller/blogs")
 
-router.post('/addBlogs',authorization,addBlogs)
+const multer = require("multer")
+const path = require("path")
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.resolve("./public/uploads/"))
+    },
+    filename: function (req, file, cb) {
+        const filename = `${Date.now()} - ${file.originalname}`
+        cb(null, filename)
+    }
+})
+
+const upload = multer({storage : storage})
+
+router.post('/addBlogs',authorization,upload.single("coverImage"),addBlogs)
 
 router.get("/getAllData",authorization,getAllData)
 
